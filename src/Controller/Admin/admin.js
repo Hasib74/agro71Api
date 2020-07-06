@@ -50,16 +50,71 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all Tutorials from the database.
-exports.findAll = (req, res) => {};
+exports.findAll = (req, res) => {
+	Admin.findAll().then((data) => {
+		if (data != null) {
+			res.send(data);
+		} else {
+			res.status(404).send({
+				message: 'Data not found',
+			});
+		}
+	});
+};
 
 // Find a single Tutorial with an id
-exports.findOne = (req, res) => {};
+exports.findOne = (req, res) => {
+	Admin.findByPk(req.params.id).then((data) => {
+		if (data != null) {
+			res.send(data);
+		} else {
+			res.status(404).send({
+				message: 'Data not found',
+			});
+		}
+	});
+};
 
 // Update a Tutorial by the id in the request
-exports.update = (req, res) => {};
+exports.update = (req, res) => {
+	Admin.update(req.body, { where: { id: req.params.id } }).then((data) => {
+		console.log(data);
+
+		if (data == 1) {
+			res.json(200, {
+				message: 'Update successfully',
+				data: req.body,
+			});
+		} else {
+			res.status(404).send({
+				message: 'Failed to update',
+			});
+		}
+
+		//	res.send(data);
+	});
+};
 
 // Delete a Tutorial with the specified id in the request
-exports.delete = (req, res) => {};
+exports.delete = (req, res) => {
+	Admin.destroy({ where: { id: req.params.id } }).then((data) => {
+		console.log(data);
+
+		if (data == 1) {
+			res.json(
+				res.json({
+					message: 'Deleted Successfully',
+				})
+			);
+		} else {
+			res.json(
+				res.status(404).json({
+					message: 'Failed to delete',
+				})
+			);
+		}
+	});
+};
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {};
