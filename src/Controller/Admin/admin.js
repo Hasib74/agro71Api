@@ -1,8 +1,14 @@
 const db = require('../../Model/index.js');
+const admin = require('../../Model/admin.js');
+
+const jwt = require('jsonwebtoken');
+
 const Admin = db.admin;
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
+	///console.log(req.user.Email);
+
 	// Validate request
 	if (!req.body.Name) {
 		res.status(400).send({
@@ -38,7 +44,10 @@ exports.create = (req, res) => {
 
 	Admin.create(data)
 		.then((data) => {
-			res.send(data);
+			res.send(
+				data
+				//user: req.user.Email,
+			);
 		})
 		.catch((err) => {
 			res.status(500).send({
@@ -116,6 +125,52 @@ exports.delete = (req, res) => {
 	});
 };
 
+exports.logIn = (req, res) => {
+	if (req.body.Email == null) {
+		res.status(404).send({
+			message: 'Email not found.',
+		});
+	} else if (req.body.Password == null) {
+		res.status(404).send({
+			message: 'Email not found.',
+		});
+	}
+
+	Admin.findAll({
+		where: { Email: req.body.Email, Password: req.body.Password },
+	}).then((data) => {
+		console.log(data[0]);
+
+		if (data.length == 0) {
+			res.send({
+				message: 'User not found',
+			});
+		} else {
+			var token = jwt.sign(
+				{ Email: req.body.Email, type: data[0].type },
+				'SECRET',
+				{
+					expiresIn: '10 min',
+				}
+			);
+
+			if (token != null) {
+				console.log(token);
+
+				res.send({
+					message: 'Login Success',
+					token: token,
+				});
+			} else {
+				res.status(404).send({ message: 'Failed to login' });
+			}
+		}
+	});
+};
+
+exports.logout = (req, res) => {
+	jwt.si;
+};
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {};
 
