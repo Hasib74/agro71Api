@@ -10,7 +10,7 @@ app.post('/logout', adminController.logout);
 app.use(auth, (req, res, next) => {
 	console.log(req.user.type);
 
-	if (req.user.type.toLowerCase().endsWith('admin')) {
+	if (req.user.type == 'super admin') {
 		next();
 	} else {
 		res.send({ message: 'No access' });

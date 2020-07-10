@@ -42,20 +42,38 @@ exports.create = (req, res) => {
 
 	//	Admin.findOne(1);
 
-	Admin.create(data)
-		.then((data) => {
-			res.send(
-				data
-				//user: req.user.Email,
-			);
-		})
-		.catch((err) => {
-			res.status(500).send({
-				message:
-					err.message ||
-					'Some error occurred while creating the Tutorial.',
-			});
+	if (req.body.type == 'super admin') {
+		Admin.findAll({ where: { type: 'super admin' } }).then((user) => {
+			console.log(user);
+
+			if (user[0] != null) {
+				res.send({
+					status: false,
+					message: 'Can not add multiple super user',
+				});
+			} else {
+				console.log(data);
+
+				Admin.create(data).then((user) => {
+					res.send({ status: true, data: user });
+				});
+			}
 		});
+	} else {
+		console.log(req.body.Email);
+
+		Admin.findAll({ where: { Email: req.body.Email } }).then((user) => {
+			console.log(user);
+
+			if (user[0] != null) {
+				res.send({ status: false, message: 'Already added' });
+			} else {
+				Admin.create(data).then((user) => {
+					res.send({ status: true, data: user });
+				});
+			}
+		});
+	}
 };
 
 // Retrieve all Tutorials from the database.
@@ -141,16 +159,17 @@ exports.logIn = (req, res) => {
 	}).then((data) => {
 		console.log(data[0]);
 
-		if (data.length == 0) {
+		if (data[0] == null) {
 			res.send({
+				status: false,
 				message: 'User not found',
 			});
 		} else {
 			var token = jwt.sign(
-				{ Email: req.body.Email, type: data[0].type },
+				{ Email: req.body.Email, type: data[0].type, id: data[0].id },
 				'SECRET',
 				{
-					expiresIn: '10 min',
+					expiresIn: '30 min',
 				}
 			);
 
@@ -158,11 +177,16 @@ exports.logIn = (req, res) => {
 				console.log(token);
 
 				res.send({
+					status: true,
+
 					message: 'Login Success',
 					token: token,
 				});
 			} else {
-				res.status(404).send({ message: 'Failed to login' });
+				res.status(404).send({
+					status: false,
+					message: 'Failed to login',
+				});
 			}
 		}
 	});

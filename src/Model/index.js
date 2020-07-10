@@ -18,8 +18,13 @@ db.sequelize = sequelize;
 
 db.admin = require('../Model/admin.js')(sequelize, Sequelize);
 db.product = require('../Model/product.js')(sequelize, Sequelize);
+db.category = require('../Model/category.js')(sequelize, Sequelize);
+db.invest = require('../Model/invest.js')(sequelize, Sequelize);
 
 db.admin.hasMany(db.product);
-db.product.belongsTo(db.admin);
+
+db.category.hasMany(db.product);
+
+db.admin.hasMany(db.invest);
 
 module.exports = db;
