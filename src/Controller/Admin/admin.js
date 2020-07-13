@@ -167,10 +167,10 @@ exports.logIn = (req, res) => {
 		} else {
 			var token = jwt.sign(
 				{ Email: req.body.Email, type: data[0].type, id: data[0].id },
-				'SECRET',
-				{
-					expiresIn: '30 min',
-				}
+				'SECRET'
+				// {
+				// 	expiresIn: '30 min',
+				// }
 			);
 
 			if (token != null) {
