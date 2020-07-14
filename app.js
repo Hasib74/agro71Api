@@ -19,6 +19,7 @@ var designationRoute = require('./src/Route/designation.js');
 var taskRoute = require('./src/Route/task.js');
 var orderRoute = require('./src/Route/order.js');
 var orderDetails = require('./src/Route/orderDetails.js');
+var moenyRequestRoute = require('./src/Route/moneyRequest');
 
 app.use('/api/admin', userRoute);
 app.use('/api/product', productRoute);
@@ -30,6 +31,7 @@ app.use('/api/designation', designationRoute);
 app.use('/api/task', taskRoute);
 app.use('/api/order', orderRoute);
 app.use('/api/orderDetails', orderDetails);
+app.use('/api/moneyRequest', moenyRequestRoute);
 
 app.listen('3000', () => {
 	console.log('Server started on port 3000');
