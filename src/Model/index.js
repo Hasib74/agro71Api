@@ -30,6 +30,8 @@ db.task = require('../Model/task.js')(sequelize, Sequelize);
 db.order = require('../Model/order.js')(sequelize, Sequelize);
 db.orderDetails = require('../Model/orderDetails.js')(sequelize, Sequelize);
 db.moneyRequest = require('../Model/moneyRequest.js')(sequelize, Sequelize);
+db.expense = require('../Model/expanse.js')(sequelize, Sequelize);
+db.feedBack = require('../Model/feedback.js')(sequelize, Sequelize);
 
 db.admin.hasMany(db.product);
 db.product.belongsTo(db.admin);
@@ -66,5 +68,11 @@ db.orderDetails.belongsTo(db.product);
 
 db.admin.hasMany(db.moneyRequest);
 db.moneyRequest.belongsTo(db.admin);
+
+db.admin.hasMany(db.expense);
+db.expense.belongsTo(db.admin);
+
+db.admin.hasMany(db.feedBack);
+db.feedBack.belongsTo(db.admin);
 
 module.exports = db;

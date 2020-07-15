@@ -20,6 +20,8 @@ var taskRoute = require('./src/Route/task.js');
 var orderRoute = require('./src/Route/order.js');
 var orderDetails = require('./src/Route/orderDetails.js');
 var moenyRequestRoute = require('./src/Route/moneyRequest');
+var expanseRoute = require('./src/Route/expanse');
+var feedbackRoute = require('./src/Route/feedback');
 
 app.use('/api/admin', userRoute);
 app.use('/api/product', productRoute);
@@ -32,6 +34,8 @@ app.use('/api/task', taskRoute);
 app.use('/api/order', orderRoute);
 app.use('/api/orderDetails', orderDetails);
 app.use('/api/moneyRequest', moenyRequestRoute);
+app.use('/api/expanse', expanseRoute);
+app.use('/api/feedback', feedbackRoute);
 
 app.listen('3000', () => {
 	console.log('Server started on port 3000');
