@@ -7,14 +7,9 @@ const Admin = db.admin;
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
-	///console.log(req.user.Email);
-
-	// Validate request
-	if (!req.body.Name) {
-		res.status(400).send({
-			message: 'Content can not be empty!',
-		});
-		return;
+	console.log('file is ' + req.file.path);
+	if (req == null) {
+		res.send({ message: 'File Requred' });
 	}
 
 	// Create a Tutorial
@@ -22,7 +17,7 @@ exports.create = (req, res) => {
 		Name: req.body.Name,
 		Email: req.body.Email,
 		Phone: req.body.Phone,
-		Picture: req.body.Picture,
+		Picture: req.file.path,
 		Nid: req.body.Nid,
 		JoiningDate: req.body.JoiningDate,
 		Address: req.body.Address,
@@ -30,17 +25,6 @@ exports.create = (req, res) => {
 		FamilyContact: req.body.FamilyContact,
 		type: req.body.type,
 	};
-
-	// Save Tutorial in the database
-
-	//Admin.save(data);
-
-	//Admin.create(data);
-
-	//console.log(Admin);
-	//console.log(data);
-
-	//	Admin.findOne(1);
 
 	if (req.body.type == 'super admin') {
 		Admin.findAll({ where: { type: 'super admin' } }).then((user) => {
@@ -181,6 +165,7 @@ exports.logIn = (req, res) => {
 
 					message: 'Login Success',
 					token: token,
+					adminType: data[0].type,
 				});
 			} else {
 				res.status(404).send({

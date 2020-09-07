@@ -32,6 +32,7 @@ module.exports = (sequelize, Sequelize) => {
 		FamilyContact: {
 			type: Sequelize.STRING,
 		},
+
 		type: {
 			type: Sequelize.STRING,
 		},
